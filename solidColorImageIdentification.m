@@ -79,11 +79,34 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
    [filename pathname] = uigetfile({'*.jpg';'*.bmp'},'File Selector');
-   handles.myImage = strcat(pathname, filename);
+   image = strcat(pathname, filename);
    axes(handles.axes1);
-   imshow(handles.myImage)
+   imshow(image)
    set(handles.edit1,'string',filename);
    set(handles.edit2,'string',pathname);
+   
+   %calculate the greyscale value for the image
+    Im = imread(image);
+    Gray = rgb2gray(Im);
+    axes(handles.axes2)
+    imshow(Gray);
+
+    GIm=uint8(zeros(size(Im,1),size(Im,2)));
+    binaryImage = zeros(size(Gray));
+    for i=1:size(Gray,1)
+          for j=1:size(Gray,2)
+              pixel(i,j)=Gray(i,j);
+              if pixel(i,j) == 255
+                new_pixel(i,j) = 255;
+              else
+                new_pixel(i,j) = 0;
+              end
+              binaryImage(i,j) = new_pixel(i,j);
+          end
+    end
+    
+    axes(handles.axes3)
+    imshow(binaryImage);
 
 
 
